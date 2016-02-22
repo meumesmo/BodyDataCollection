@@ -1,3 +1,22 @@
 # Body Data Collection
 
 This is a repository containing a set of softwares that allows to collect data from a user using the Kinect sensor from Microsoft.
+
+## Installing the softwares
+
+The first thing you need to know is this set works only on Windows machines. 
+
+### First Step
+Downloand and Install the kinect from the following link https://download.microsoft.com/download/E/1/D/E1DEC243-0389-4A23-87BF-F47DE869FC1A/KinectSDK-v1.8-Setup.exe
+
+To install the SDK:
+* Make sure the Kinect sensor is not plugged into any of the USB ports on the computer.
+* If you have a previous version of the Kinect for Windows SDK currently installed, close any open samples, the Sample Browser, etc. and skip to step 5. Kinect for Windows v1.8 will upgrade the previous version.
+* Remove any other drivers for the Kinect sensor.
+* If you have Microsoft Server Speech Platform 10.2 installed, uninstall the Microsoft Server Speech Platform Runtime and SDK components including both the x86 and x64 bit versions, plus the Microsoft Server Speech Recognition Language - Kinect Language Pack.
+* Close Visual Studio. You must close Visual Studio before installing the SDK and then restart it after installation to pick up environment variables that the SDK requires.
+* From the download location, double-click on KinectSDK-v1.8-Setup.exe. This single installer works for both 32-bit and 64-bit Windows.
+* Once the SDK has completed installing successfully, ensure the Kinect sensor is plugged into an external power source and then plug the Kinect sensor into the PC's USB port. The drivers will load automatically.
+* The Kinect sensor should now be working correctly.
+
+### Second Step
