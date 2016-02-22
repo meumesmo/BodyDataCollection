@@ -1,3 +1,3 @@
 # Body Data Collection
 
-This is a repository containing a set of softwares that allows to collect data from a user using the Kinect hardware.
+This is a repository containing a set of softwares that allows to collect data from a user using the Kinect sensor from Microsoft.
