@@ -36,7 +36,7 @@ download an installer or the application itself.
 For this first version we collect only the (X,Y) coordinates from the superior members. On the next versions we will provide the full skeleton data with (X,Y,Z) coordinates.
 The data is sent by UDP as string type, then in Cinderella the function tokenize() is called to put the data into an array
 
-The keywords and its correspondent (X,Y) is represented on the following table (this will be improved):
+The keywords and its correspondent (X,Y) are represented on the following table (this will be improved):
 
 Body Point | KeyWord | Index X | Index Y
 -----------|---------|---------|--------
