@@ -20,3 +20,6 @@ To install the SDK:
 * The Kinect sensor should now be working correctly.
 
 ### Second Step
+Download the .zip file called BodyData and extract it on your PC.
+You'll find a folder and a file. The executable file must be always on the same directory as the folder. Otherwise it won't work. 
+Run the GetBodyData.exe. Stay in front of the kinect sensor. If you have correctly installed the sdk, you must appear on the screen. 
