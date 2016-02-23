@@ -1,6 +1,6 @@
 # Body Data Collection
 
-This is a repository containing a set of softwares that allows to collect data from a user using the Kinect sensor from Microsoft. This version allows collection 2D data from the superior members, it means: Center shoulder, Shoulders, Elbows, Wrists and Hands. A new version will be released to collect 3D data from all the skeleton.
+This is a repository containing a set of softwares that allows to collect data from a user using the Kinect sensor from Microsoft. This version allows collection 2D data from the superior members, it means: Center shoulder, Shoulders, Elbows, Wrists and Hands. A new version will be released to collect 3D data of the entire skeleton.
 
 ## Installing the softwares
 
