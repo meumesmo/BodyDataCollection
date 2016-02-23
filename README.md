@@ -47,5 +47,8 @@ The keywords and its correspondent (X,Y) is represented on the following table:
 Body Point | KeyWord | Index X | Index Y
 -----------|---------|---------|--------
 Center Shoulder | CS | 2 | 4
+-|-|-|-
+Left Hand | LH | 30 | 32
+
 
 
