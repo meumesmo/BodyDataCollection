@@ -28,3 +28,17 @@ Run the GetBodyData.exe. Stay in front of the kinect sensor. If you have correct
 If you want to use the data on the same way that we do it. You must install The Interactive Geometry Software Cinderella as well. The Cinderella consists of three major program parts: the geometry program, the
 scripting language, and the simulation engine. The following chapters will highlight
 several aspects of these three parts of the program. It's a powerfull software, you can do amazing things with it.
+The Cinderella software itself is available as a free download from the Cinderella
+homepage at http://cinderella.de. Depending on your platform you either
+download an installer or the application itself.
+
+Cinderella is written in the Java programming language. On most computers the
+environment to run Java based software is pre-installed. This includes Mac OS X
+and most versions of Windows. On other operating systems, for example Linux,
+you might have to install a so-called Java Virtual Machine that is available for most
+platforms at http://www.java.com as a free download.
+
+##Using the pack
+
+
+
