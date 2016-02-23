@@ -51,6 +51,20 @@ Left Hand | LH | 30 | 32
 Left Wrist | LW | 6 | 8
 Left Elbow | LE | 10 | 12
 Left Shoulder | LS | 14 | 16
+Right Shoulder | RS | 18 | 20
+Right Elbow | RE | 22 | 24
+Right Wrist | RW | 26 | 28
+Right Hand | RH | 34 | 36
+
+The data is sent by the UDP port 5555. The following code in CindyScript from the BodyCopier.cdy shows an example of the use:
+
+    //Initialization
+    udplisten(5555);
+    forall( allpoints(), #.labelled=false; );
+
+    //TimerTick
+    string = udpreceive(5555);
+    arrayWithCoordinates = tokenize( string, "," );
 
 
 
