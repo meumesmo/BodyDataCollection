@@ -39,6 +39,13 @@ you might have to install a so-called Java Virtual Machine that is available for
 platforms at http://www.java.com as a free download.
 
 ##Using the pack
+For this first version we collect only the (X,Y) coordinates from the superior members. On the next versions we will provide the full skeleton data with (X,Y,Z) coordinates.
+The data is sent by UDP as string type, then in Cinderella the fucntion tokenize() is called to put the data into an array
 
+The keywords and its correspondent (X,Y) is represented on the following table:
+
+Body Point | KeyWord | Index X | Index Y
+-----------|---------|---------|--------
+Center Shoulder | CS | 2 | 4
 
 
