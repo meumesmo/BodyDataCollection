@@ -23,3 +23,8 @@ To install the SDK:
 Download the .zip file called BodyData and extract it on your PC.
 You'll find a folder and a file. The executable file must be always on the same directory as the folder. Otherwise it won't work. 
 Run the GetBodyData.exe. Stay in front of the kinect sensor. If you have correctly installed the sdk, you must appear on the screen. 
+
+### Third Step
+If you want to use the data on the same way that we do it. You must install The Interactive Geometry Software Cinderella as well. The Cinderella consists of three major program parts: the geometry program, the
+scripting language, and the simulation engine. The following chapters will highlight
+several aspects of these three parts of the program. It's a powerfull software, you can do amazing things with it.
