@@ -64,8 +64,11 @@ The data is sent by the UDP port 5555. The following code in CindyScript from th
 
     //TimerTick
     string = udpreceive(5555);
+    //the function tokenize splits the string by each "," and puts it in an array
     arrayWithCoordinates = tokenize( string, "," );
 
-
+    err(arrayWithCoordiantes);
+result:
+    [CSX,data, CSY, data, LWX, data, LWY, data,..., RHX, data, RHY, data]
 
 
