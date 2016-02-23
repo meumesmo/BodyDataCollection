@@ -7,7 +7,7 @@ This is a repository containing a set of softwares that allows to collect data f
 The first thing you need to know is this set works only on Windows machines. 
 
 ### First Step
-Downloand and Install the kinect from the following link https://download.microsoft.com/download/E/1/D/E1DEC243-0389-4A23-87BF-F47DE869FC1A/KinectSDK-v1.8-Setup.exe
+Downloand and Install the kinect sdk from the [link](https://download.microsoft.com/download/E/1/D/E1DEC243-0389-4A23-87BF-F47DE869FC1A/KinectSDK-v1.8-Setup.exe) 
 
 To install the SDK:
 * Make sure the Kinect sensor is not plugged into any of the USB ports on the computer.
@@ -29,7 +29,7 @@ If you want to use the data on the same way that we do it. You must install The 
 scripting language, and the simulation engine. The following chapters will highlight
 several aspects of these three parts of the program. It's a powerfull software, you can do amazing things with it.
 The Cinderella software itself is available as a free download from the Cinderella
-homepage at http://cinderella.de. Depending on your platform you either
+homepage at [Cinderella page](http://cinderella.de). Depending on your platform you either
 download an installer or the application itself.
 
 Cinderella is written in the Java programming language. On most computers the
