@@ -9,7 +9,6 @@ using System;
 
 public class GetJointsPositions : MonoBehaviour {
 
-	// Use this for initialization
     // The joint we want to track
     public KinectWrapper.NuiSkeletonPositionIndex leftHand = KinectWrapper.NuiSkeletonPositionIndex.HandLeft;
     public KinectWrapper.NuiSkeletonPositionIndex rightHand = KinectWrapper.NuiSkeletonPositionIndex.HandRight;
