@@ -1,0 +1,176 @@
+//DRAW
+Text0.text="x $\mapsto$ " +f;
+
+scorefact = 2-tfn/tstep; // Factor decreases with time
+if(2*tfn>tstep,
+	plot(f(x),color->[0,0.8,0],size->8,alpha->tfn/tstep);
+);
+
+forall(consecutive(LP), 
+//	draw([(#_1).x,f((#_1).x)],[(#_2).x,f((#_2).x)]); 
+	drawSeg(((#_1).x+(#_2).x)/2); // Small segment
+);
+
+Ls=[]; // Segment scores
+ns=0.5; // weights of segments
+
+repeat(length(LP), 
+	regional(s); 
+	s=distScore((LP_#).y-f((LP_#).x)//Point score
+		/(1+(LP_#).y));// Weight less if high
+	(LP_#).color=[1-s,s,0];
+	if(#<length(LP),	
+		s=scorefact*distScore((L_#-Lf_#)// slope score
+			/(1+abs(Lf_#)) // weight less if steep slope
+			)*(1+s)/2; // Leftward point score
+		if(!isreal(s),s=0); // Sometimes vertical slope NaN
+		ns=ns+s;
+		(LS_#).color=[1-s,s,0];
+		Ls=append(Ls,s);
+	);
+);
+
+
+score = max(sum(Ls)/ns,score);
+Text1.text=L+" "+score;
+sc0.text=score;
+
+//INITIALIZATION
+// Modif:
+teamNumber=2;
+myURL="http://math.univ-lyon1.fr/~mercat/f"+teamNumber+".txt";
+portUDP=5555;
+udplisten(portUDP);
+
+fL=["0","x/2","x","2*x","x","x/2","0","-x/2","-x","-2*x","-x","-x/2"];
+// Editable at http://math.univ-lyon1.fr/~mercat/f"+teamNumber+".php
+fn=1; // The number of the current function
+tfn=0; // The time associated with it
+tstep=200; // The step when it changes. Controls speed
+nTurns=3; // The number of turns for a total score
+nTurn=0; // The current turn
+
+resetScores():=(
+	fn=1; // The number of the current function
+	tfn=0;
+	nTurn=0;
+	scn=apply(fL,0); // The scores
+	score=0; // The current function score
+	scoretot=0; // The current total score
+	nTurn=0;
+	Text2.color=[1,0,0]; // Prints score
+	inspect(Text2,"textsize",26);
+);
+resetScores();
+
+
+readURL():=(
+fFL=[];
+fFL=tokenize(load(myURL),",");
+if(length(fFL)>0,fL=fFL););
+readURL();
+
+assignTexts():=(regional(n);
+	forall(1..6,
+		n=1+mod(fn+#-4,length(fL)); //fn+i-3
+		([Tm2,Tm1,T0,T1,T2,T3]_#).text=fL_n;
+		([scm2,scm1,sc0,sc1,sc2,sc3]_#).text=scn_n;
+	);
+	Text2.text=scoretot;
+);
+assignTexts();
+
+
+f(x):=parse(T0.text);
+g(x):=d(f(#),x);
+
+LP=[A,B,C,D,E,F,H,K]; // Points
+LS=[a,b,c,d,e,f,g]; // Segments
+
+// L:=[(B.y-A.y)/(B.x-A.x),(C.y-B.y)/(C.x-B.x),10*(D.y-C.y)/(D.x-C.x),(E.y-D.y)/(E.x-D.x),(F.y-E.y)/(F.x-E.x)];
+
+//L:=apply(consecutive(LP),((#_1).y-(#_2).y)/((#_1).x-(#_2).x));
+L:=apply(LS,#.slope);
+
+// Lf:=[g((A.x+B.x)/2),g((B.x+C.x)/2),g((C.x+D.x)/2),g((D.x+E.x)/2),g((E.x+F.x)/2)];
+
+Lf:=apply(consecutive(LP),g(((#_1).x+(#_2).x)/2));
+
+forall(allpoints(),#.labelled=false;);
+forall(allsegments(),#.labelled=false; #.color=[1,0,0]; #.size=3;);
+
+drawSeg(x):=(regional(p,v); // small segment tangent to the graph of f
+	p=[x,f(x)]; v=[1,g(x)]; v=0.2*v/sqrt(1+v.y^2);
+	draw(p-v,p+v,alpha->tfn/tstep););
+
+distScore(x):= 1-sqrt(2*abs(arctan(x)/pi)); //[0=good,\infty=bad]->[0=bad, 1=good]
+
+//TIMERTICK
+s=udpreceive(portUDP);
+d=tokenize(s,",");
+
+if(Length(d)>0,
+//err(d);
+sca=0.8;
+G.xy=(d_14+d_18,-d_16-d_20)/(2*sca);
+A.xy=(0,f0)+(d_30,-d_32)/sca-G.xy;//LH
+B.xy=(0,f0)+(d_6,-d_8)/sca-G.xy;//LW
+C.xy=(0,f0)+(d_10,-d_12)/sca-G.xy;//LE
+D.xy=(0,f0)+(d_14,-d_16)/sca-G.xy;//LS
+E.xy=(0,f0)+(d_18,-d_20)/sca-G.xy;//RS
+F.xy=(0,f0)+(d_22,-d_24)/sca-G.xy;//RE
+H.xy=(0,f0)+(d_26,-d_28)/sca-G.xy;//RW
+K.xy=(0,f0)+(d_34,-parse(substring(d_36,0,6)))/sca-G.xy;//RH
+//G.xy=(C.xy+D.xy)/2;
+f0=(f(D.x)+f(E.x))/2;//Between LS/RS
+);
+
+tfn = tfn+1;
+if(tfn>tstep, // change function
+	regional(n);
+	n=1+mod(fn-1,length(fL));//fn
+  if(n==length(fL), 
+	readURL();
+	if(nTurn==nTurns,
+		Text2.text="Total: "+scoretot;
+		repeat(4,
+			Text2.color=[1-mod(#,2),mod(#,2),0];
+			inspect(Text2,"textsize",(1+#)*26);
+			wait(3000);
+		);
+		resetScores();
+		,
+		nTurn=nTurn+1;
+		inspect(Text2,"textsize",(1+nTurn)*26);
+	);
+	);
+	scoretot=scoretot-scn_n;
+	scn_n=max(score,scn_n);// save current score
+  scoretot=scoretot+scn_n;
+	score=0; // Reset current score
+	fn=fn+1; tfn=0;
+	f0=f(0);
+	assignTexts();
+	
+
+	if(Length(d)>0,
+		err("log");//log
+		err(fL_n);
+
+		sendloglevel([["action","score functions changed"],["score",scoretot],["function", fL_n]],1);
+		sendloglevel([["action","team"],["team",teamNumber]],1);
+	);
+);
+
+//SIMULATIONSTART
+readURL();
+resetScores();
+
+//KEYTYPED
+if(key()=="\n",
+	f(x):=parse(Text2.text);
+	g(x):=d(f(#),x);
+);
+if(key()==" ",
+	resetScores();
+);
