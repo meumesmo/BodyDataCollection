@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using System.Collections;
 using System.IO;
@@ -7,7 +6,8 @@ using System.Text;
 using System.Net;
 using System;
 
-public class GetJointsPositions : MonoBehaviour {
+public class GetJointsPositions : MonoBehaviour
+{
 
     // The joint we want to track
     public KinectWrapper.NuiSkeletonPositionIndex leftHand = KinectWrapper.NuiSkeletonPositionIndex.HandLeft;
@@ -19,7 +19,19 @@ public class GetJointsPositions : MonoBehaviour {
     public KinectWrapper.NuiSkeletonPositionIndex leftShoulder = KinectWrapper.NuiSkeletonPositionIndex.ShoulderLeft;
     public KinectWrapper.NuiSkeletonPositionIndex rightShoulder = KinectWrapper.NuiSkeletonPositionIndex.ShoulderRight;
     public KinectWrapper.NuiSkeletonPositionIndex shoulderCenter = KinectWrapper.NuiSkeletonPositionIndex.ShoulderCenter;
-   
+    public KinectWrapper.NuiSkeletonPositionIndex head = KinectWrapper.NuiSkeletonPositionIndex.Head;
+    public KinectWrapper.NuiSkeletonPositionIndex leftAnkle = KinectWrapper.NuiSkeletonPositionIndex.AnkleLeft;
+    public KinectWrapper.NuiSkeletonPositionIndex rightAnkle = KinectWrapper.NuiSkeletonPositionIndex.AnkleRight;
+    public KinectWrapper.NuiSkeletonPositionIndex leftHip = KinectWrapper.NuiSkeletonPositionIndex.HipLeft;
+    public KinectWrapper.NuiSkeletonPositionIndex rightHip = KinectWrapper.NuiSkeletonPositionIndex.HipRight;
+    public KinectWrapper.NuiSkeletonPositionIndex centerHip = KinectWrapper.NuiSkeletonPositionIndex.HipCenter;
+    public KinectWrapper.NuiSkeletonPositionIndex leftFoot = KinectWrapper.NuiSkeletonPositionIndex.FootLeft;
+    public KinectWrapper.NuiSkeletonPositionIndex rightFoot = KinectWrapper.NuiSkeletonPositionIndex.FootRight;
+    public KinectWrapper.NuiSkeletonPositionIndex rightKnee = KinectWrapper.NuiSkeletonPositionIndex.KneeRight;
+    public KinectWrapper.NuiSkeletonPositionIndex leftKnee = KinectWrapper.NuiSkeletonPositionIndex.KneeLeft;
+    
+
+
     // The gameobjects correspondent with each joint
     //This is necessary to control via Unity the graphic objects
     public GameObject LeftHand;
@@ -31,6 +43,16 @@ public class GetJointsPositions : MonoBehaviour {
     public GameObject RightElbow;
     public GameObject RightWrist;
     public GameObject RightHand;
+    public GameObject Head;
+    public GameObject AnkleLeft;
+    public GameObject AnkleRight;
+    public GameObject LeftFoot;
+    public GameObject RightFoot;
+    public GameObject HipLeft;
+    public GameObject HipRight;
+    public GameObject HipCenter;
+    public GameObject LeftKnee;
+    public GameObject RightKnee;
 
     //Joints Position
 
@@ -43,6 +65,16 @@ public class GetJointsPositions : MonoBehaviour {
     Vector3 RightElbowPos;
     Vector3 RightWristPos;
     Vector3 RightHandPos;
+    Vector3 LeftFootPos;
+    Vector3 RightFootPos;
+    Vector3 LeftKneePos;
+    Vector3 RightKneePos;
+    Vector3 LeftHipPos;
+    Vector3 RightHipPos;
+    Vector3 HeadPos;
+    Vector3 CenterHipPos;
+    Vector3 RightAnkle;
+    Vector3 LeftAnkle;
 
     //sendInfoUDP
     public bool isSending = false;
@@ -51,19 +83,22 @@ public class GetJointsPositions : MonoBehaviour {
     public float DistanceFactor = 1f;
     public float PositionFactorX = 0f;
     public float PositionFactorY = 0f;
+    public float PositionFactorZ = 0f;
 
     string message = "1";
 
     //Information to send
 
-   
-	void Start () {
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-       
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
 
         SendUDP("127.0.0.1", 5557, Encoding.ASCII.GetBytes(message.ToString()));
 
@@ -80,29 +115,29 @@ public class GetJointsPositions : MonoBehaviour {
 
                 if (manager.IsJointTracked(userId, (int)leftHand))
                 {
-					Vector3 leftHandPos = Vector3.Scale((manager.GetJointPosition(userId, (int)leftHand)) , new Vector3(1,1,0));
-                    LeftHand.transform.position = leftHandPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, 0);
+                    Vector3 leftHandPos = Vector3.Scale((manager.GetJointPosition(userId, (int)leftHand)), new Vector3(1, 1, 1));
+                    LeftHand.transform.position = leftHandPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
                     LeftHandPos = leftHandPos;
                 }
 
                 if (manager.IsJointTracked(userId, (int)leftWrist))
                 {
-					Vector3 leftWristPos = Vector3.Scale ((manager.GetJointPosition(userId, (int)leftWrist)), new Vector3 (1,1,0));
-                    LeftWrist.transform.position = leftWristPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, 0);
+                    Vector3 leftWristPos = Vector3.Scale((manager.GetJointPosition(userId, (int)leftWrist)), new Vector3(1, 1, 1));
+                    LeftWrist.transform.position = leftWristPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
                     LeftWristPos = leftWristPos;
                 }
 
                 if (manager.IsJointTracked(userId, (int)leftElbow))
                 {
-                    Vector3 leftElbowPos = Vector3.Scale((manager.GetJointPosition(userId, (int)leftElbow)),new Vector3(1,1,0));
-                    LeftElbow.transform.position = leftElbowPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, 0);
+                    Vector3 leftElbowPos = Vector3.Scale((manager.GetJointPosition(userId, (int)leftElbow)), new Vector3(1, 1, 1));
+                    LeftElbow.transform.position = leftElbowPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
                     LeftElbowPos = leftElbowPos;
                 }
 
                 if (manager.IsJointTracked(userId, (int)leftShoulder))
                 {
-					Vector3 leftShoulderPos = Vector3.Scale(( manager.GetJointPosition(userId, (int)leftShoulder)),new Vector3 (1,1,0));
-                    LeftShoulder.transform.position = leftShoulderPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, 0);
+                    Vector3 leftShoulderPos = Vector3.Scale((manager.GetJointPosition(userId, (int)leftShoulder)), new Vector3(1, 1, 1));
+                    LeftShoulder.transform.position = leftShoulderPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
                     LeftShoulderPos = leftShoulderPos;
                 }
 
@@ -110,8 +145,8 @@ public class GetJointsPositions : MonoBehaviour {
 
                 if (manager.IsJointTracked(userId, (int)shoulderCenter))
                 {
-					Vector3 centerShoulderPos = Vector3.Scale((manager.GetJointPosition(userId, (int)shoulderCenter)), new Vector3(1,1,0));
-                    CenterShoulder.transform.position = centerShoulderPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, 0);
+                    Vector3 centerShoulderPos = Vector3.Scale((manager.GetJointPosition(userId, (int)shoulderCenter)), new Vector3(1, 1, 1));
+                    CenterShoulder.transform.position = centerShoulderPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
                     CenterShoulderPos = centerShoulderPos;
                 }
 
@@ -120,67 +155,74 @@ public class GetJointsPositions : MonoBehaviour {
 
                 if (manager.IsJointTracked(userId, (int)rightHand))
                 {
-					Vector3 rightHandPos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightHand)),new Vector3(1,1,0));
-                    RightHand.transform.position = rightHandPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, 0);
+                    Vector3 rightHandPos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightHand)), new Vector3(1, 1, 1));
+                    RightHand.transform.position = rightHandPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
                     RightHandPos = rightHandPos;
                 }
 
                 if (manager.IsJointTracked(userId, (int)rightWrist))
                 {
-					Vector3 rightWristPos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightWrist)), new Vector3(1,1,0));
-                    RightWrist.transform.position = rightWristPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, 0);
+                    Vector3 rightWristPos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightWrist)), new Vector3(1, 1, 1));
+                    RightWrist.transform.position = rightWristPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
                     RightWristPos = rightWristPos;
                 }
 
                 if (manager.IsJointTracked(userId, (int)rightElbow))
                 {
-					Vector3 rightElbowPos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightElbow)),new Vector3(1,1,0));
-                    RightElbow.transform.position = rightElbowPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, 0);
+                    Vector3 rightElbowPos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightElbow)), new Vector3(1, 1, 1));
+                    RightElbow.transform.position = rightElbowPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
                     RightElbowPos = rightElbowPos;
                 }
 
                 if (manager.IsJointTracked(userId, (int)rightShoulder))
                 {
-					Vector3 rightShoulderPos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightShoulder)),new Vector3(1,1,0));
-                    RightShoulder.transform.position = rightShoulderPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, 0);
+                    Vector3 rightShoulderPos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightShoulder)), new Vector3(1, 1, 1));
+                    RightShoulder.transform.position = rightShoulderPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
                     RightShoulderPos = rightShoulderPos;
+                }
+
+                //LEFTSIDE LEGS 
+
+                if(manager.IsJointTracked(userId, (int)leftFoot))
+                {
+
                 }
 
                 //End of recognition
 
-                message = "CSX: ," + CenterShoulder.transform.position.x.ToString() + "," 
-                    + "CSY: ," + (CenterShoulder.transform.position.y * (-1)).ToString() + "," 
-                    + "LWX: ," + LeftWrist.transform.position.x.ToString() + "," 
-                    + "LWY: ," + (LeftWrist.transform.position.y * (-1)).ToString() + "," 
-                    + "LEX: ," + LeftElbow.transform.position.x.ToString() + "," 
-                    + "LEY: ," + (LeftElbow.transform.position.y * (-1)).ToString() + "," 
-                    + "LSX: ," + LeftShoulder.transform.position.x.ToString() + "," 
-                    + "LSY: ," + (LeftShoulder.transform.position.y * (-1)).ToString() + "," 
-                    + "RSX: ," + RightShoulder.transform.position.x.ToString() + "," 
-                    + "RSY: ," + (RightShoulder.transform.position.y * (-1)).ToString() + "," 
-                    + "REX: ," + RightElbow.transform.position.x.ToString() + "," 
-                    + "REY: ," + (RightElbow.transform.position.y * (-1)).ToString() + "," 
-                    + "RWX: ," + RightWrist.transform.position.x.ToString() + "," 
-                    + "RWY: ," + (RightWrist.transform.position.y * (-1)).ToString() + "," 
-                    + "LHX: ," + LeftHand.transform.position.x.ToString() + "," 
-                    + "LHY: ," + (LeftHand.transform.position.y * (-1)).ToString() + "," 
-                    + "RHX: ," + RightHand.transform.position.x.ToString() + "," 
+                message = "CSX: ," + CenterShoulder.transform.position.x.ToString() + ","
+                    + "CSY: ," + (CenterShoulder.transform.position.y * (-1)).ToString() + ","
+                    + "LWX: ," + LeftWrist.transform.position.x.ToString() + ","
+                    + "LWY: ," + (LeftWrist.transform.position.y * (-1)).ToString() + ","
+                    + "LEX: ," + LeftElbow.transform.position.x.ToString() + ","
+                    + "LEY: ," + (LeftElbow.transform.position.y * (-1)).ToString() + ","
+                    + "LSX: ," + LeftShoulder.transform.position.x.ToString() + ","
+                    + "LSY: ," + (LeftShoulder.transform.position.y * (-1)).ToString() + ","
+                    + "RSX: ," + RightShoulder.transform.position.x.ToString() + ","
+                    + "RSY: ," + (RightShoulder.transform.position.y * (-1)).ToString() + ","
+                    + "REX: ," + RightElbow.transform.position.x.ToString() + ","
+                    + "REY: ," + (RightElbow.transform.position.y * (-1)).ToString() + ","
+                    + "RWX: ," + RightWrist.transform.position.x.ToString() + ","
+                    + "RWY: ," + (RightWrist.transform.position.y * (-1)).ToString() + ","
+                    + "LHX: ," + LeftHand.transform.position.x.ToString() + ","
+                    + "LHY: ," + (LeftHand.transform.position.y * (-1)).ToString() + ","
+                    + "RHX: ," + RightHand.transform.position.x.ToString() + ","
                     + "LHY: ," + (RightHand.transform.position.y * (-1)).ToString() + ","
-                    + "CSZ: ," + CenterShoulder.transform.position.z.ToString() + "," 
-                    + "LHZ: ," + LeftHand.transform.position.z.ToString() + "," 
-                    + "LWZ: ," + LeftWrist.transform.position.z.ToString() + "," 
-                    + "LEZ: ," + LeftElbow.transform.position.z.ToString() + "," 
-                    + "LSZ: ," + LeftShoulder.transform.position.z.ToString() + "," 
-                    + "RSZ: ," + RightShoulder.transform.position.z.ToString() +","
-                    + "REZ: ," + RightElbow.transform.position.z.ToString()+","
-                    + "RWZ: ," + RightWrist.transform.position.z.ToString()+","
+                    + "CSZ: ," + CenterShoulder.transform.position.z.ToString() + ","
+                    + "LHZ: ," + LeftHand.transform.position.z.ToString() + ","
+                    + "LWZ: ," + LeftWrist.transform.position.z.ToString() + ","
+                    + "LEZ: ," + LeftElbow.transform.position.z.ToString() + ","
+                    + "LSZ: ," + LeftShoulder.transform.position.z.ToString() + ","
+                    + "RSZ: ," + RightShoulder.transform.position.z.ToString() + ","
+                    + "REZ: ," + RightElbow.transform.position.z.ToString() + ","
+                    + "RWZ: ," + RightWrist.transform.position.z.ToString() + ","
                     + "RHZ: ," + RightHand.transform.position.z.ToString();
 
                 Debug.Log(CenterShoulder.transform.position.z);
             }
         }
 
-	}
+    }
 
     void SendUDP(string dstIP, int dstPort, byte[] data)
     {
@@ -188,7 +230,3 @@ public class GetJointsPositions : MonoBehaviour {
             c.Send(data, data.Length, dstIP, dstPort);
     }
 }
-
-
-
-
