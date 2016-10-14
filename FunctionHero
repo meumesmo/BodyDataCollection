@@ -1,0 +1,184 @@
+//DRAW
+Text0.text="x $\mapsto$ " +f;
+
+drawtext([-3.5,-3],nTurn);
+scorefact = (2-tfn/tstep)*(1+nTurn); // Factor decreases with time tfn:0..tstep and increases with number of turn
+if(2*tfn>tstep,
+	plot(f(x),color->[0,0.8,0],size->8,alpha->tfn/tstep);
+);
+
+forall(consecutive(LP), 
+//	draw([(#_1).x,f((#_1).x)],[(#_2).x,f((#_2).x)]); 
+	drawSeg(((#_1).x+(#_2).x)/2); // Small segment
+);
+
+Ls=[]; // Segment scores
+ns=0.5; // weights of segments
+
+repeat(length(LP), 
+	regional(s); 
+	s=distScore(10*((LP_#).y-f((LP_#).x))//Point score
+		/(1+0.1*abs((LP_#).y)));// Weight less if high
+	(LP_#).color=[1-s,s,0];
+	if(#<length(LP),	
+		s=scorefact*distScore(10*(L_#-Lf_#)// slope score
+			/(1+0.1*abs(Lf_#)) // weight less if steep slope
+			)*(1+abs(s))/2; // Leftward point score
+		if(!isreal(s),s=0); // Sometimes vertical slope NaN
+		ns=ns+1;
+		(LS_#).color=[1-s,s,0];
+		Ls=append(Ls,s);
+	);
+);
+
+
+score = max(sum(Ls)/ns,score);
+Text1.text=L+" "+score;
+sc0.text=score;
+
+//INITILIZATION
+// Modif:
+teamNumber=1;
+myURL="http://math.univ-lyon1.fr/~mercat/f"+teamNumber+".txt";
+portUDP=5555;
+udplisten(portUDP);
+
+fL=["0","x/2","x","2*x","x","x/2","0","-x/2","-x","-2*x","-x","-x/2"];
+fL=["1", "cos(x)", "sin(x)", "1/x^2", "-x", "abs(x)", "tan(x/2)", "sin(x)", "tan(x/2)"];
+// Editable at http://math.univ-lyon1.fr/~mercat/f"+teamNumber+".php
+fn=1; // The number of the current function
+tfn=0; // The time associated with it
+tstep=200; // The step when it changes. Controls speed 500=training 200=competition
+nTurns=2; // The number of turns for a total score
+nTurn=0; // The current turn
+
+readURL():=(
+fFL=[];
+//fFL=tokenize(load(myURL),",");
+if(length(fFL)>0,fL=fFL););
+
+resetScores():=(
+	fn=1; // The number of the current function
+	tfn=0;
+	nTurn=0;
+	scn=apply(fL,0); // The scores
+	score=0; // The current function score
+	scoretot=0; // The current total score
+	Text2.color=[1,0,0]; // Prints score
+	inspect(Text2,"textsize",26);
+  assignTexts();
+	readURL();
+);
+
+assignTexts():=(regional(n);
+	forall(1..6,
+		n=1+mod(fn+#-4,length(fL)); //fn+i-3
+		([Tm2,Tm1,T0,T1,T2,T3]_#).text=fL_n;
+		([scm2,scm1,sc0,sc1,sc2,sc3]_#).text=scn_n;
+	);
+	Text2.text=scoretot;
+);
+
+resetScores();
+
+
+
+
+f(x):=parse(T0.text);
+g(x):=d(f(#),x);
+
+LP=[A,B,C,D,E,F,H,K]; // Points
+LS=[a,b,c,d,e,f,g]; // Segments
+
+// L:=[(B.y-A.y)/(B.x-A.x),(C.y-B.y)/(C.x-B.x),10*(D.y-C.y)/(D.x-C.x),(E.y-D.y)/(E.x-D.x),(F.y-E.y)/(F.x-E.x)];
+
+//L:=apply(consecutive(LP),((#_1).y-(#_2).y)/((#_1).x-(#_2).x));
+L:=apply(LS,#.slope);
+
+// Lf:=[g((A.x+B.x)/2),g((B.x+C.x)/2),g((C.x+D.x)/2),g((D.x+E.x)/2),g((E.x+F.x)/2)];
+
+Lf:=apply(consecutive(LP),g(((#_1).x+(#_2).x)/2));
+
+forall(allpoints(),#.labelled=false;);
+forall(allsegments(),#.labelled=false; #.color=[1,0,0]; #.size=3;);
+
+drawSeg(x):=(regional(p,v); // small segment tangent to the graph of f
+	p=[x,f(x)]; v=[1,g(x)]; v=0.2*v/sqrt(1+v.y^2);
+	draw(p-v,p+v,alpha->tfn/tstep););
+
+distScore(x):= 1-sqrt(2*abs(arctan(x)/pi)); //[0=good,\infty=bad]->[0=bad, 1=good]
+
+//TIMERTICK
+// Modif:
+teamNumber=1;
+myURL="http://math.univ-lyon1.fr/~mercat/f"+teamNumber+".txt";
+portUDP=5555;
+udplisten(portUDP);
+
+fL=["0","x/2","x","2*x","x","x/2","0","-x/2","-x","-2*x","-x","-x/2"];
+fL=["1", "cos(x)", "sin(x)", "1/x^2", "-x", "abs(x)", "tan(x/2)", "sin(x)", "tan(x/2)"];
+// Editable at http://math.univ-lyon1.fr/~mercat/f"+teamNumber+".php
+fn=1; // The number of the current function
+tfn=0; // The time associated with it
+tstep=200; // The step when it changes. Controls speed 500=training 200=competition
+nTurns=2; // The number of turns for a total score
+nTurn=0; // The current turn
+
+readURL():=(
+fFL=[];
+//fFL=tokenize(load(myURL),",");
+if(length(fFL)>0,fL=fFL););
+
+resetScores():=(
+	fn=1; // The number of the current function
+	tfn=0;
+	nTurn=0;
+	scn=apply(fL,0); // The scores
+	score=0; // The current function score
+	scoretot=0; // The current total score
+	Text2.color=[1,0,0]; // Prints score
+	inspect(Text2,"textsize",26);
+  assignTexts();
+	readURL();
+);
+
+assignTexts():=(regional(n);
+	forall(1..6,
+		n=1+mod(fn+#-4,length(fL)); //fn+i-3
+		([Tm2,Tm1,T0,T1,T2,T3]_#).text=fL_n;
+		([scm2,scm1,sc0,sc1,sc2,sc3]_#).text=scn_n;
+	);
+	Text2.text=scoretot;
+);
+
+resetScores();
+
+
+
+
+f(x):=parse(T0.text);
+g(x):=d(f(#),x);
+
+LP=[A,B,C,D,E,F,H,K]; // Points
+LS=[a,b,c,d,e,f,g]; // Segments
+
+// L:=[(B.y-A.y)/(B.x-A.x),(C.y-B.y)/(C.x-B.x),10*(D.y-C.y)/(D.x-C.x),(E.y-D.y)/(E.x-D.x),(F.y-E.y)/(F.x-E.x)];
+
+//L:=apply(consecutive(LP),((#_1).y-(#_2).y)/((#_1).x-(#_2).x));
+L:=apply(LS,#.slope);
+
+// Lf:=[g((A.x+B.x)/2),g((B.x+C.x)/2),g((C.x+D.x)/2),g((D.x+E.x)/2),g((E.x+F.x)/2)];
+
+Lf:=apply(consecutive(LP),g(((#_1).x+(#_2).x)/2));
+
+forall(allpoints(),#.labelled=false;);
+forall(allsegments(),#.labelled=false; #.color=[1,0,0]; #.size=3;);
+
+drawSeg(x):=(regional(p,v); // small segment tangent to the graph of f
+	p=[x,f(x)]; v=[1,g(x)]; v=0.2*v/sqrt(1+v.y^2);
+	draw(p-v,p+v,alpha->tfn/tstep););
+
+distScore(x):= 1-sqrt(2*abs(arctan(x)/pi)); //[0=good,\infty=bad]->[0=bad, 1=good]
+
+//SIMULATIONSTART
+resetScores();
