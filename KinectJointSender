@@ -29,7 +29,7 @@ public class GetJointsPositions : MonoBehaviour
     public KinectWrapper.NuiSkeletonPositionIndex rightFoot = KinectWrapper.NuiSkeletonPositionIndex.FootRight;
     public KinectWrapper.NuiSkeletonPositionIndex rightKnee = KinectWrapper.NuiSkeletonPositionIndex.KneeRight;
     public KinectWrapper.NuiSkeletonPositionIndex leftKnee = KinectWrapper.NuiSkeletonPositionIndex.KneeLeft;
-    
+
 
 
     // The gameobjects correspondent with each joint
@@ -71,10 +71,11 @@ public class GetJointsPositions : MonoBehaviour
     Vector3 RightKneePos;
     Vector3 LeftHipPos;
     Vector3 RightHipPos;
+    Vector3 HipCenterPos;
     Vector3 HeadPos;
     Vector3 CenterHipPos;
-    Vector3 RightAnkle;
-    Vector3 LeftAnkle;
+    Vector3 RightAnklePos;
+    Vector3 LeftAnklePos;
 
     //sendInfoUDP
     public bool isSending = false;
@@ -110,6 +111,36 @@ public class GetJointsPositions : MonoBehaviour
             {
                 uint userId = manager.GetPlayer1ID();
 
+
+                //LEFTSIDE LEGS 
+
+                if (manager.IsJointTracked(userId, (int)leftFoot))
+                {
+                    Vector3 leftFootPos = Vector3.Scale((manager.GetJointPosition(userId, (int)leftFoot)), new Vector3(1, 1, 1));
+                    LeftFoot.transform.position = leftFootPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
+                    LeftFootPos = leftFootPos;
+                }
+
+                if(manager.IsJointTracked(userId, (int)leftHip))
+                {
+                    Vector3 leftHipPos = Vector3.Scale((manager.GetJointPosition(userId, (int)leftHip)), new Vector3(1, 1, 1));
+                    HipLeft.transform.position = leftHipPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
+                    LeftHipPos = leftHipPos;
+                }
+
+                if(manager.IsJointTracked(userId, (int)leftAnkle))
+                {
+                    Vector3 leftAnklePos = Vector3.Scale((manager.GetJointPosition(userId, (int)leftAnkle)), new Vector3(1, 1, 1));
+                    AnkleLeft.transform.position = leftAnklePos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
+                    LeftAnklePos = leftAnklePos;
+                }
+
+                if(manager.IsJointTracked(userId, (int)leftKnee))
+                {
+                    Vector3 leftKneePos = Vector3.Scale((manager.GetJointPosition(userId, (int)leftKnee)), new Vector3(1, 1, 1));
+                    LeftKnee.transform.position = leftKneePos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
+                    LeftKneePos = leftKneePos;
+                }
                 //Left Side
                 //Arms
 
@@ -150,7 +181,50 @@ public class GetJointsPositions : MonoBehaviour
                     CenterShoulderPos = centerShoulderPos;
                 }
 
+                if(manager.IsJointTracked(userId, (int)head))
+                {
+                    Vector3 headPos = Vector3.Scale((manager.GetJointPosition(userId, (int)head)), new Vector3(1, 1, 1));
+                    Head.transform.position = headPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
+                    HeadPos = headPos;
+                }
+
+                if(manager.IsJointTracked(userId, (int)centerHip))
+                {
+                    Vector3 centerHipPos = Vector3.Scale((manager.GetJointPosition(userId, (int)centerHip)), new Vector3(1, 1, 1));
+                    HipCenter.transform.position = centerHipPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
+                    HipCenterPos = centerHipPos;
+                }
+
                 //Right Side
+
+                if (manager.IsJointTracked(userId, (int)rightFoot))
+                {
+                    Vector3 rightFootPos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightFoot)), new Vector3(1, 1, 1));
+                    RightFoot.transform.position = rightFootPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
+                    RightFootPos = rightFootPos;
+                }
+
+                if (manager.IsJointTracked(userId, (int)rightHip))
+                {
+                    Vector3 rightHipPos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightHip)), new Vector3(1, 1, 1));
+                    HipRight.transform.position = rightHipPos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
+                    RightHipPos = rightHipPos;
+                }
+
+                if (manager.IsJointTracked(userId, (int)rightAnkle))
+                {
+                    Vector3 rightAnklePos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightAnkle)), new Vector3(1, 1, 1));
+                    AnkleRight.transform.position = rightAnklePos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
+                    RightAnklePos = rightAnklePos;
+                }
+
+
+                if (manager.IsJointTracked(userId, (int)rightKnee))
+                {
+                    Vector3 rightKneePos = Vector3.Scale((manager.GetJointPosition(userId, (int)rightKnee)), new Vector3(1, 1, 1));
+                    RightKnee.transform.position = rightKneePos * DistanceFactor + new Vector3(PositionFactorX, PositionFactorY, PositionFactorZ);
+                    RightKneePos = rightKneePos;
+                }
                 //Arms
 
                 if (manager.IsJointTracked(userId, (int)rightHand))
@@ -181,42 +255,71 @@ public class GetJointsPositions : MonoBehaviour
                     RightShoulderPos = rightShoulderPos;
                 }
 
-                //LEFTSIDE LEGS 
+            
 
-                if(manager.IsJointTracked(userId, (int)leftFoot))
-                {
-
-                }
+                message  = 
+                    "HDX,"+Head.transform.position.x.ToString()+"," +
+                    "HDY,"+(Head.transform.position.y * (-1)).ToString()+"," +
+                    "HDZ," + Head.transform.position.z.ToString()+"," +
+                    "CSX," + CenterShoulder.transform.position.x.ToString() + "," +
+                    "CSY," + (CenterShoulder.transform.position.y * (-1)).ToString() + "," +
+                    "CSZ," + CenterShoulder.transform.position.z.ToString() + "," +
+                    "LSX," + LeftShoulder.transform.position.x.ToString() + ","+
+                    "LSY," + (LeftShoulder.transform.position.y * (-1)).ToString() + ","+
+                    "LSZ,"+ LeftShoulder.transform.position.z.ToString() + ","+
+                    "LEX," + LeftElbow.transform.position.x.ToString() + ","+
+                    "LEY," + (LeftElbow.transform.position.y * (-1)).ToString() + ","+
+                    "LEZ,"+LeftElbow.transform.position.z.ToString()+","+
+                    "LWX," + LeftWrist.transform.position.x.ToString() + ","+
+                    "LWY," + (LeftWrist.transform.position.y * (-1)).ToString() + ","+
+                    "LWZ," + LeftWrist.transform.position.z.ToString() + "," +
+                    "LHX," + LeftHand.transform.position.x.ToString() + ","+
+                    "LHY," + (LeftHand.transform.position.y * (-1)).ToString() + ","+
+                    "LHZ," + LeftHand.transform.position.z.ToString() + "," +
+                    "LIX,"+HipLeft.transform.position.x.ToString()+","+
+                    "LIY,"+(HipLeft.transform.position.y *(-1)).ToString()+","+
+                    "LIZ,"+HipLeft.transform.position.z.ToString()+","+
+                    "LKX,"+LeftKnee.transform.position.x.ToString()+","+
+                    "LKY,"+(LeftKnee.transform.position.y*(-1)).ToString()+","+
+                    "LKZ,"+LeftKnee.transform.position.z.ToString()+","+
+                    "LAX,"+AnkleLeft.transform.position.x.ToString()+","+
+                    "LAY,"+(AnkleLeft.transform.position.y * (-1)).ToString()+","+
+                    "LAZ,"+AnkleLeft.transform.position.z.ToString()+","+
+                    "LFX,"+LeftFoot.transform.position.x.ToString()+ ","+
+                    "LFY,"+(LeftFoot.transform.position.y*(-1)).ToString()+","+
+                    "LFZ,"+LeftFoot.transform.position.z.ToString()+","+
+                    "RSX," + RightShoulder.transform.position.x.ToString() + ","+
+                    "RSY," + (RightShoulder.transform.position.y * (-1)).ToString() + ","+
+                    "RSZ,"+RightShoulder.transform.position.z.ToString()+","+
+                    "REX," + RightElbow.transform.position.x.ToString() + ","+
+                    "REY," + (RightElbow.transform.position.y * (-1)).ToString() + ","+
+                    "REZ," + RightElbow.transform.position.z.ToString() + ","+
+                    "RWX," + RightWrist.transform.position.x.ToString() + ","+
+                    "RWY," + (RightWrist.transform.position.y * (-1)).ToString() + ","+
+                    "RWZ," + RightWrist.transform.position.z.ToString() + ","+
+                    "RHX," + RightHand.transform.position.x.ToString() + ","+
+                    "RHY,"+(RightHand.transform.position.y*(-1)).ToString()+","+
+                    "RHZ," + RightHand.transform.position.z.ToString()+","+
+                    "RIX,"+HipRight.transform.position.x.ToString()+","+
+                    "RIY,"+(HipRight.transform.position.y*(-1)).ToString()+","+
+                    "RIZ,"+HipRight.transform.position.z.ToString()+","+
+                    "CIX,"+HipCenter.transform.position.x.ToString()+","+
+                    "CIY,"+(HipCenter.transform.position.y * (-1)).ToString()+","+
+                    "CIZ,"+HipCenter.transform.position.z.ToString()+","+
+                    "RKX,"+RightKnee.transform.position.x.ToString()+","+
+                    "RKY,"+(RightKnee.transform.position.y * (-1)).ToString()+","+
+                    "RKZ,"+RightKnee.transform.position.z.ToString()+","+
+                    "RAX,"+AnkleRight.transform.position.x.ToString()+","+
+                    "RAY,"+(AnkleRight.transform.position.y * (-1)).ToString()+","+
+                    "RAZ,"+AnkleRight.transform.position.z.ToString()+","+
+                    "RFX,"+RightFoot.transform.position.x.ToString()+","+
+                    "RFY,"+(RightFoot.transform.position.y * (-1)).ToString()+","+
+                    "RFZ,"+RightFoot.transform.position.z.ToString()
+                    ;
 
                 //End of recognition
 
-                message = "CSX: ," + CenterShoulder.transform.position.x.ToString() + ","
-                    + "CSY: ," + (CenterShoulder.transform.position.y * (-1)).ToString() + ","
-                    + "LWX: ," + LeftWrist.transform.position.x.ToString() + ","
-                    + "LWY: ," + (LeftWrist.transform.position.y * (-1)).ToString() + ","
-                    + "LEX: ," + LeftElbow.transform.position.x.ToString() + ","
-                    + "LEY: ," + (LeftElbow.transform.position.y * (-1)).ToString() + ","
-                    + "LSX: ," + LeftShoulder.transform.position.x.ToString() + ","
-                    + "LSY: ," + (LeftShoulder.transform.position.y * (-1)).ToString() + ","
-                    + "RSX: ," + RightShoulder.transform.position.x.ToString() + ","
-                    + "RSY: ," + (RightShoulder.transform.position.y * (-1)).ToString() + ","
-                    + "REX: ," + RightElbow.transform.position.x.ToString() + ","
-                    + "REY: ," + (RightElbow.transform.position.y * (-1)).ToString() + ","
-                    + "RWX: ," + RightWrist.transform.position.x.ToString() + ","
-                    + "RWY: ," + (RightWrist.transform.position.y * (-1)).ToString() + ","
-                    + "LHX: ," + LeftHand.transform.position.x.ToString() + ","
-                    + "LHY: ," + (LeftHand.transform.position.y * (-1)).ToString() + ","
-                    + "RHX: ," + RightHand.transform.position.x.ToString() + ","
-                    + "LHY: ," + (RightHand.transform.position.y * (-1)).ToString() + ","
-                    + "CSZ: ," + CenterShoulder.transform.position.z.ToString() + ","
-                    + "LHZ: ," + LeftHand.transform.position.z.ToString() + ","
-                    + "LWZ: ," + LeftWrist.transform.position.z.ToString() + ","
-                    + "LEZ: ," + LeftElbow.transform.position.z.ToString() + ","
-                    + "LSZ: ," + LeftShoulder.transform.position.z.ToString() + ","
-                    + "RSZ: ," + RightShoulder.transform.position.z.ToString() + ","
-                    + "REZ: ," + RightElbow.transform.position.z.ToString() + ","
-                    + "RWZ: ," + RightWrist.transform.position.z.ToString() + ","
-                    + "RHZ: ," + RightHand.transform.position.z.ToString();
+               
 
                 Debug.Log(CenterShoulder.transform.position.z);
             }
